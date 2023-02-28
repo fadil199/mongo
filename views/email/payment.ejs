@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Order Confirmation</title>
+  </head>
+  <body>
+    <h1>Order Confirmation</h1>
+    <p>
+      Thank you for booking your flight with us! Here are the details of your
+      reservation:
+    </p>
+    <ul>
+      <h3>Detail Penerbangan</h3>
+      <li>Departure Airport: <%= flight.departureAirport %></li>
+      <li>Departure : <%= flight.departure %></li>
+      <li>Departure Date: <%= flight.date %></li>
+      <% if (flight.tripType == 'round_trip') { %>
+      <li>Return Date: <%= flight.returnDate %></li>
+      <% } %>
+      <li>Arrival Airport: <%= flight.arrivalAirport %></li>
+      <li>Arrival: <%= flight.arrival %></li>
+      <li>
+        Departure Time: <%= flight.departureTime.slice(0, 5) %><%=
+        flight.departureTime >= '12:00' ? 'PM' : 'AM' %>
+      </li>
+      <li>
+        Arrival Time: <%= flight.arrivalTime.slice(0, 5) %><%=
+        flight.arrivalTime >= '12:00' ? 'PM' : 'AM' %>
+      </li>
+      <% if (flight.tripType == 'one_way') { %>
+      <li>Trip Type: One Way</li>
+      <% } else { %>
+      <li>Trip Type: Round Trip</li>
+      <% } %>
+      <li>
+        Seat Class: <%= flight.sc.charAt(0).toUpperCase()
+        %><%=flight.sc.slice(1) %>
+      </li>
+      <% if (trans.total > 1) { %>
+      <li>Passenger: <%= trans.total %> Passengers</li>
+      <% } else { %>
+      <li>Passenger: <%= trans.total %> Passenger</li>
+      <% } %>
+      <li>Price : Rp <%= flight.price * trans.total%></li>
+      <br />
+      <h3>Get Your Ticket</h3>
+        <a
+          href="<%= link1 %>"
+          style="
+            display: inline-block;
+            padding: 12px 24px;
+            background-color: #532cd3;
+            font-size: 14px;
+            color: #ffffff;
+            text-decoration: none;
+            border-radius: 4px;
+          "
+          >Download Here</a>
+    <p>We look forward to seeing you on board!, hope you have a pleasant journey!</p>
+  </body>
+</html>
