@@ -1,4 +1,5 @@
 const  Auth  = require('../models/auth')
+const  Profile  = require('../models/profile')
 const roles = require('../utils/roles');
 const userTypes = require('../utils/userType');
 const validator = require("validator");
@@ -69,7 +70,18 @@ module.exports = {
                 is_verified,
               })
 
-              const payload1 = { email: data.email };
+              const detail = await Profile.create({ 
+                user_id: data._id,
+                fullName: ' ',
+                gender: ' ',
+                country: ' ',
+                province: ' ',
+                city: ' ',
+                address: ' ',
+                phone: ' ',
+               })
+
+              const payload1 = { _id: data._id };
               const token = jwt.sign(payload1, JWT_TOKEN);
               const link = `${apiHost}/auth/verif?token=${token}`;
 
@@ -124,7 +136,7 @@ module.exports = {
         });
 
         const payload = {
-          id: usercompare.id,
+          _id: usercompare._id,
           username: usercompare.username,
           email: usercompare.email,
           role: usercompare.role,
@@ -148,14 +160,19 @@ module.exports = {
         next(err)
       }
     },
-    akunSaya: (req, res, next) => {
+    akunSaya: async (req, res, next) => {
       const user = req.user;
+
+      const user1 = await Auth.findOne({ _id: user._id });
+
+      const user2 = await Profile.findOne ({ user_id: user1._id })
       
       try {
           return res.status(200).json({
               status: true,
               message: 'autentifikasi berhasil',
-              data: user
+              data: [user1, user2]
+                  
           });
       }catch (err) {
           next(err);
@@ -175,7 +192,7 @@ module.exports = {
 
       const verif = await Auth.updateOne(
         {
-          email: payload.email
+          _id: payload._id
         },
         {
           is_verified: 1
@@ -188,6 +205,69 @@ module.exports = {
       });
     } catch (err) {
       next(err);
+    }
+  },
+  updateProfile: async (req, res, next) => {
+    try {
+      const {
+        first_name,
+        last_name,
+        gender,
+        country,
+        province,
+        city,
+        address,
+        phone,
+      } = req.body;
+
+      const _id = req.user._id;
+      const exist = await Auth.findOne({ _id: _id });
+
+      if (!exist)
+        return res
+          .status(400)
+          .json({ status: false, message: "user not found!" });
+
+      const detail_user = await Profile.updateOne(
+        {
+          user_id: exist._id,
+        },
+        {
+          fullName: [first_name, last_name].join(" "),
+          gender,
+          country,
+          province,
+          city,
+          address,
+          phone,
+        }
+      );
+
+      const updatedProfile = await Profile.findOne({ user_id: exist._id });
+
+      return res.status(200).json({
+        status: true,
+        message: "Profile updated successfully",
+        data: updatedProfile,
+      });
+    } catch (err) {
+      next(err);
+    }
+  },
+  myprofile: async (req, res, next) => {
+    try{
+      const _id = req.user._id;
+      const data = await Profile.findOne({ user_id: _id})
+
+      if (!data) return res.status(400).json({ status: false, message: 'user not found!' })
+
+      return res.status(200).json({
+        status: true,
+        message: 'data found',
+        data: data
+      })
+    }catch (err){
+      next(err)
     }
   }
 }
