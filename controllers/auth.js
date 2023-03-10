@@ -6,6 +6,9 @@ const validator = require("validator");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const email1 = require("../utils/sendEmail");
+const multer = require("multer");
+const upload = multer();
+const imagekit = require("../utils/imagekit");
 
 const {
   JWT_TOKEN,
@@ -139,6 +142,7 @@ module.exports = {
           _id: usercompare._id,
           username: usercompare.username,
           email: usercompare.email,
+          thumbnail: usercompare.thumbnail,
           role: usercompare.role,
           user_type: usercompare.user_type,
           is_verified: usercompare.is_verified,
@@ -162,16 +166,12 @@ module.exports = {
     },
     akunSaya: async (req, res, next) => {
       const user = req.user;
-
-      const user1 = await Auth.findOne({ _id: user._id });
-
-      const user2 = await Profile.findOne ({ user_id: user1._id })
       
       try {
           return res.status(200).json({
               status: true,
               message: 'autentifikasi berhasil',
-              data: [user1, user2]
+              data: user
                   
           });
       }catch (err) {
@@ -266,6 +266,42 @@ module.exports = {
         message: 'data found',
         data: data
       })
+    }catch (err){
+      next(err)
+    }
+  },
+  changeImage: async (req, res, next) => {
+    try{
+      
+      const _id = req.user._id;
+      const exist = await Auth.findOne( { _id } );
+      if (!exist) return res.status(400).json({ status: false, message: "user not found!"})
+
+      let uploadedFile1 = null;
+      if (req.file != undefined) {
+        const file = req.file.buffer.toString("base64");
+
+        const uploadedFile = await imagekit.upload({
+          file,
+          fileName: Date.now() + '_' + req.file.originalname,
+        });
+
+        const image = uploadedFile.url;
+        uploadedFile1 = await Auth.updateOne(
+          {
+            _id: _id
+          },
+          {
+            thumbnail: image
+          }
+        )
+      }
+        const upload = await Auth.findOne({ _id: _id })
+        return res.status(200).json({
+          status: true,
+          message: "success upload document",
+          data: upload,
+        });
     }catch (err){
       next(err)
     }

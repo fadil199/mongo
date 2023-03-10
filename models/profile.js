@@ -23,7 +23,7 @@ const Profile = mongoose.model('Profile', {
             type: String
         },
         phone: {
-            type: Number
+            type: String
         },
 });
 

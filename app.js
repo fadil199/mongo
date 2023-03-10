@@ -5,9 +5,9 @@ const mongoose = require("mongoose");
 const morgan = require("morgan")
 const app = express();
 const router = require("./routes");
+const path = require('path')
 
 require('./db/db')
-const Contact = require('./models/user')
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -20,13 +20,7 @@ app.use(morgan("dev"));
 
 // const uri = 'mongodb://127.0.0.1:27017';
 
-const { HTTP_PORT, db, uri } = process.env;
-
-app.get('/contact', async (req, res) => {
-    const contacts = await Contact.find();
-
-    return res.send(contacts)
-})
+const { HTTP_PORT } = process.env;
 
 
 app.listen(HTTP_PORT, () => console.log("listening on port", HTTP_PORT));
