@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-
+    
 const Game = mongoose.model('Game', {
         user_id: {
             type: String,

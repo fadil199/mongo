@@ -278,6 +278,18 @@ module.exports = {
 
       let uploadedFile1 = null;
       if (req.file != undefined) {
+
+        let image1 = new RegExp(
+          "^.*\.(img|jpg|jpeg|png)$"
+        );
+        let check = image1.test(req.file.originalname);
+        if (!check)
+          return res.status(400).json({
+            status: false,
+            message:
+              "Hanya file bertipe img, jpg, jpeg, dan png yang diizinkan",
+          });
+          
         const file = req.file.buffer.toString("base64");
 
         const uploadedFile = await imagekit.upload({
