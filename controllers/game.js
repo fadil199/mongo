@@ -34,7 +34,7 @@ module.exports = {
                 nilai
             })
 
-            return res.status(400).json({ 
+            return res.status(200).json({ 
                 status: false, 
                 message: 'input nilai berhasil',
                 data: data
@@ -52,7 +52,7 @@ module.exports = {
 
             const mygame = await Game.find({ user_id: exist._id })
 
-            return res.status(400).json({ 
+            return res.status(200).json({ 
                 status: false, 
                 message: 'input nilai berhasil',
                 data: mygame
@@ -84,9 +84,9 @@ module.exports = {
 
             const hapus = await Game.deleteOne({ _id: id });
 
-            return res.status(400).json({ 
+            return res.status(200).json({ 
                 status: false, 
-                message: 'data berhasil di hapus',
+                message: `game dengan ${id} berhasil di hapus!`,
                 data: hapus
             });
         }catch (err){
@@ -141,9 +141,9 @@ module.exports = {
                 }
                 );
 
-            return res.status(400).json({ 
+            return res.status(200).json({ 
                 status: false, 
-                message: 'data berhasil di ubah',
+                message: `game dengan ${id} berhasil di ubah!`,
                 data: edit
             });
         }catch (err){

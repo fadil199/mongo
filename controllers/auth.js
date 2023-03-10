@@ -18,7 +18,6 @@ const {
 
 module.exports = {
     register: async (req, res, next) => {
-        // const user1 = new Auth(req.body);
         try {
 
             const {
@@ -26,7 +25,7 @@ module.exports = {
                 email,
                 password,
                 confirmPassword,
-                thumbnail = 'saawfawd',
+                thumbnail = 'https://www.vecteezy.com/vector-art/8442086-illustration-of-human-icon-vector-user-symbol-icon-modern-design-on-blank-background',
                 role = roles.user,
                 user_type = userTypes.basic,
                 is_verified = 0,
