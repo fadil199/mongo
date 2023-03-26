@@ -18,7 +18,7 @@ const oauth2Client = new google.auth.OAuth2(
 );
 
 oauth2Client.setCredentials({
-  refresh_token: GOOGLE_REFRESH_TOKEN3,
+  refresh_token: GOOGLE_REFRESH_TOKEN3
 });
 
 module.exports = {

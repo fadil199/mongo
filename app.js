@@ -22,5 +22,27 @@ app.use(morgan("dev"));
 
 const { HTTP_PORT } = process.env;
 
+app.use((req, res, next) => {
+    return res.status(404).json({
+        status: false,
+        message: 'hayo tersesat ya?'
+    })
+})
+
+app.use((err, req, res, next) => {
+    if(err.code == 'LIMIT_FILE_SIZE' || err.message == 'file too large'){
+        return res.status(500).json({
+            status: false,
+            message: "ukuran file terlalu besar maksimal 1 MB untuk images dan untuk video maksimal 10 MB"
+        })
+    } else {
+    return res.status(500).json({
+        status: false,
+        message: err.message
+    })
+}
+})
+
+
 
 app.listen(HTTP_PORT, () => console.log("listening on port", HTTP_PORT));

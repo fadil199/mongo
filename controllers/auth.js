@@ -1,5 +1,6 @@
-const  Auth  = require('../models/auth')
-const  Profile  = require('../models/profile')
+const  Auth  = require('../models/auth');
+const  Profile  = require('../models/profile');
+const  Token  = require('../models/token');
 const roles = require('../utils/roles');
 const userTypes = require('../utils/userType');
 const validator = require("validator");
@@ -87,6 +88,12 @@ module.exports = {
               const token = jwt.sign(payload1, JWT_TOKEN);
               const link = `${apiHost}/auth/verif?token=${token}`;
 
+              const expired = await Token.create({
+                user_id: data._id,
+                token: token,
+                expired: 0
+              })
+
               const html = await email1.getHtml("email/helo.ejs", {
               user: {
                 name: data.username,
@@ -107,7 +114,17 @@ module.exports = {
             })
 
         }catch (err){
-            next(err)
+            // next(err)
+            const cari = await Auth.findOne({ email: req.body.email})
+            if (err.message == 'invalid_grant' || err.message == 'invalid_request') {
+              await Auth.deleteOne({ email: cari.email})
+              await Profile.deleteOne({ user_id: cari._id})
+            }
+
+            return res.status(500).json({
+              status: false,
+              message: 'perbarui google playground'
+            })
         }
     },
     login: async (req, res, next) => {
@@ -189,6 +206,24 @@ module.exports = {
 
       const payload = jwt.verify(token, JWT_TOKEN);
 
+      const expired = await Token.findOne(
+        { 
+          $and: [
+              {
+                  user_id: payload._id
+              },
+              {
+                  token: token
+              },
+              {
+                  expired: 1
+              }
+          ]  
+          }
+      )
+
+      if (expired) return res.status(400).json({ status: false, message: 'your account has been verified' })
+
       const verif = await Auth.updateOne(
         {
           _id: payload._id
@@ -197,6 +232,16 @@ module.exports = {
           is_verified: 1
         }
       );
+
+      const verif1 = await Token.updateOne(
+        {
+         user_id: payload._id
+        }
+        ,
+        {
+          expired: 1
+        }
+      )
 
       return res.status(200).json({
         status: true,

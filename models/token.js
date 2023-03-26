@@ -1,18 +1,18 @@
 const mongoose = require('mongoose');
 
-const Contact = mongoose.model('Contact', {
-    nama: {
+const Token = mongoose.model('Token', {
+    user_id: {
         type: String,
         required: true
     },
-    nohp: {
+    token: {
         type: String,
         required: true
     },
-    email: {
-        type: String,
+    expired: {
+        type: Number,
         required: true
     }
 });
 
-module.exports = Contact;
+module.exports = Token;
