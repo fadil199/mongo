@@ -13,7 +13,8 @@ const imagekit = require("../utils/imagekit");
 
 const {
   JWT_TOKEN,
-  apiHost
+  apiHost,
+  FE_HOST
 } = process.env;
 
 
