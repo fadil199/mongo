@@ -158,7 +158,6 @@ module.exports = {
           _id: usercompare._id,
           username: usercompare.username,
           email: usercompare.email,
-          thumbnail: usercompare.thumbnail,
           role: usercompare.role,
           user_type: usercompare.user_type,
           is_verified: usercompare.is_verified,
