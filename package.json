@@ -2,9 +2,9 @@
   "name": "mongo",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "index.js",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon index.js"
   },
   "author": "",
   "license": "ISC",
