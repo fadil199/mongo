@@ -18,14 +18,12 @@ index.set("view engine", "ejs");
 // app.use(express.static(path.join(__dirname, "client")));
 index.use(morgan("dev"));
 
-// const uri = 'mongodb://127.0.0.1:27017';
-
 const { HTTP_PORT } = process.env;
 
 index.get('/', (req, res) => {
     return res.status(200).json({
         status: true,
-        message: 'ini percobaan deploy ke vercel'
+        message: 'ini percobaan deploy'
     })
 })
 
