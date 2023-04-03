@@ -170,7 +170,7 @@ module.exports = {
             message: 'berhasil masuk',
             data: {
                 email: usercompare.email,
-                jwt_token: token
+                token: token
             }
         })
 
