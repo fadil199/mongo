@@ -61,12 +61,12 @@ module.exports = {
                 return res.status(400).json({status: false, message: 'password 1 & 2 doesnt match'})
               }
 
-              const encr = await bcrypt.hash(password, 10);
+              // const encr = await bcrypt.hash(password, 10);
               const data = await Auth.create({
                 username,
                 email,
-                password: encr,
-                confirmPassword: encr,
+                password,
+                confirmPassword,
                 thumbnail,
                 role,
                 user_type,
@@ -140,13 +140,13 @@ module.exports = {
         }
 
         
-        const pass = await bcrypt.compare(password, usercompare.password);
-        if (!pass) {
-          return res.status(400).json({
-            status: false,
-            message: 'wrong password!!'
-          })
-        }
+        // const pass = await bcrypt.compare(password, usercompare.password);
+        // if (!pass) {
+        //   return res.status(400).json({
+        //     status: false,
+        //     message: 'wrong password!!'
+        //   })
+        // }
         
         if (usercompare.is_verified == 0) 
         return res.status(400).json({
