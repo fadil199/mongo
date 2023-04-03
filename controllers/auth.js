@@ -4,7 +4,7 @@ const  Token  = require('../models/token');
 const roles = require('../utils/roles');
 const userTypes = require('../utils/userType');
 const validator = require("validator");
-
+const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const email1 = require("../utils/sendEmail");
 const multer = require("multer");
@@ -61,12 +61,12 @@ module.exports = {
                 return res.status(400).json({status: false, message: 'password 1 & 2 doesnt match'})
               }
 
-              // const encr = await bcrypt.hash(password, 10);
+              const encr = await bcrypt.hash(password, 10);
               const data = await Auth.create({
                 username,
                 email,
-                password,
-                confirmPassword,
+                password: encr,
+                confirmPassword: encr,
                 thumbnail,
                 role,
                 user_type,
@@ -140,13 +140,13 @@ module.exports = {
         }
 
         
-        // const pass = await bcrypt.compare(password, usercompare.password);
-        // if (!pass) {
-        //   return res.status(400).json({
-        //     status: false,
-        //     message: 'wrong password!!'
-        //   })
-        // }
+        const pass = await bcrypt.compare(password, usercompare.password);
+        if (!pass) {
+          return res.status(400).json({
+            status: false,
+            message: 'wrong password!!'
+          })
+        }
         
         if (usercompare.is_verified == 0) 
         return res.status(400).json({
