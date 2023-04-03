@@ -242,10 +242,7 @@ module.exports = {
         }
       )
 
-      return res.status(200).json({
-        status: true,
-        message: 'akun berhasil diverifikasi'
-      });
+      return res.redirect(`${FE_HOST}/verified-email/`)
     } catch (err) {
       next(err);
     }
