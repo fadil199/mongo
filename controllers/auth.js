@@ -4,7 +4,7 @@ const  Token  = require('../models/token');
 const roles = require('../utils/roles');
 const userTypes = require('../utils/userType');
 const validator = require("validator");
-const bcrypt = require("bcrypt");
+
 const jwt = require("jsonwebtoken");
 const email1 = require("../utils/sendEmail");
 const multer = require("multer");
