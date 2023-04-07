@@ -110,7 +110,7 @@ module.exports = {
 
             return res.status(201).json({
                 status: true,
-                message: 'berhasil menambahkan data',
+                message: 'account has been created!',
                 data: data
             })
 
