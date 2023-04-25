@@ -23,7 +23,7 @@ const { HTTP_PORT } = process.env;
 index.get('/', (req, res) => {
     return res.status(200).json({
         status: true,
-        message: 'ini percobaan deploy'
+        message: 'API'
     })
 })
 
