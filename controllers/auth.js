@@ -121,7 +121,7 @@ module.exports = {
             const cari = await Auth.findOne({ email: req.body.email})
             if (err.message == 'invalid_grant' || err.message == 'invalid_request') {
               await Auth.deleteOne({ email: cari.email})
-              await Profile.deleteOne({ user_id: cari._id})
+              await Profile.deleteOne({ user_id: cari.id})
 
               return res.status(500).json({
                 status: false,
@@ -233,7 +233,7 @@ module.exports = {
 
       const verif = await Auth.updateOne(
         {
-          _id: payload._id
+          id: payload.id
         },
         {
           is_verified: 1

@@ -8,14 +8,14 @@ module.exports = {
 
             const { nama_game, nilai } = req.body;
 
-            const exist = await Auth.findOne({ _id: user._id});
+            const exist = await Auth.findOne({ id: user.id});
             if (!exist) return res.status(400).json({ status: false, message: 'user not found!'})
 
             const existgame = await Game.findOne(
                 {
                     $and: [
                         {
-                            user_id: exist._id
+                            user_id: exist.id
                         },
                         {
                             nama_game: nama_game
@@ -28,7 +28,7 @@ module.exports = {
                 if (existgame) return res.status(400).json({ status: false, message: `game dengan nama ${nama_game} sudah ada`})
 
             const data = await Game.create({
-                user_id: exist._id,
+                user_id: exist.id,
                 nickname: exist.username,
                 nama_game,
                 nilai
@@ -47,10 +47,10 @@ module.exports = {
         try{
             const user = req.user;
 
-            const exist = await Auth.findOne({ _id: user._id});
+            const exist = await Auth.findOne({ id: user.id});
             if (!exist) return res.status(400).json({ status: false, message: 'user not found!'})
 
-            const mygame = await Game.find({ user_id: exist._id })
+            const mygame = await Game.find({ user_id: exist.id })
 
             return res.status(200).json({ 
                 status: false, 
@@ -66,23 +66,23 @@ module.exports = {
             const user = req.user;
             const { id } = req.params;
 
-            const us = await Auth.findOne({ _id: user._id});
+            const us = await Auth.findOne({ id: user.id});
             if (!us) return res.status(400).json({ status: false, message: 'user tidak ditemukan!'})
 
             const exist = await Game.findOne(
                 { 
                 $and: [
                     {
-                        _id: id
+                        id: id
                     },
                     {
-                        user_id: us._id
+                        user_id: us.id
                     }
                 ]  
                 });
             if (!exist) return res.status(400).json({ status: false, message: `game dengan id ${id} tidak ditemukan!`})
 
-            const hapus = await Game.deleteOne({ _id: id });
+            const hapus = await Game.deleteOne({ id: id });
 
             return res.status(200).json({ 
                 status: false, 
@@ -99,17 +99,17 @@ module.exports = {
             const { id } = req.params;
             const { nama_game, nilai } = req.body;
 
-            const us = await Auth.findOne({ _id: user._id});
+            const us = await Auth.findOne({ id: user.id});
             if (!us) return res.status(400).json({ status: false, message: 'user tidak ditemukan!'})
 
             const exist = await Game.findOne(
                 { 
                 $and: [
                     {
-                        _id: id
+                        id: id
                     },
                     {
-                        user_id: us._id
+                        user_id: us.id
                     }
                 ]  
                 });
@@ -119,7 +119,7 @@ module.exports = {
                 {
                     $and: [
                         {
-                            user_id: us._id
+                            user_id: us.id
                         },
                         {
                             nama_game: nama_game
@@ -133,7 +133,7 @@ module.exports = {
 
             const edit = await Game.updateOne(
                 { 
-                    _id: id 
+                    id: id 
                 },
                 {
                     nama_game,
