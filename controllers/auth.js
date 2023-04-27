@@ -65,7 +65,7 @@ module.exports = {
 
               const encr = await bcrypt.hash(password, 10);
               const data = await Auth.create({
-                id: data._id,
+                id: Date.now(),
                 username,
                 email,
                 password: encr,
@@ -77,7 +77,7 @@ module.exports = {
               })
 
               const detail = await Profile.create({ 
-                user_id: data._id,
+                user_id: data.id,
                 fullName: ' ',
                 gender: ' ',
                 country: ' ',
@@ -87,12 +87,12 @@ module.exports = {
                 phone: ' ',
                })
 
-              const payload1 = { _id: data._id };
+              const payload1 = { id: data.id };
               const token = jwt.sign(payload1, JWT_TOKEN);
               const link = `${apiHost}/auth/verif?token=${token}`;
 
               const expired = await Token.create({
-                user_id: data._id,
+                user_id: data.id,
                 token: token,
                 expired: 0
               })
@@ -122,12 +122,17 @@ module.exports = {
             if (err.message == 'invalid_grant' || err.message == 'invalid_request') {
               await Auth.deleteOne({ email: cari.email})
               await Profile.deleteOne({ user_id: cari._id})
-            }
 
-            return res.status(500).json({
-              status: false,
-              message: 'perbarui google playground'
-            })
+              return res.status(500).json({
+                status: false,
+                message: 'perbarui google playground'
+              })
+            } else {
+              return res.status(500).json({
+                status: false,
+                message: err.message
+              })
+            }
         }
     },
     login: async (req, res, next) => {
@@ -158,7 +163,7 @@ module.exports = {
         });
 
         const payload = {
-          _id: usercompare._id,
+          id: usercompare.id,
           username: usercompare.username,
           email: usercompare.email,
           role: usercompare.role,
@@ -212,7 +217,7 @@ module.exports = {
         { 
           $and: [
               {
-                  user_id: payload._id
+                  user_id: payload.id
               },
               {
                   token: token
@@ -237,7 +242,7 @@ module.exports = {
 
       const verif1 = await Token.updateOne(
         {
-         user_id: payload._id
+         user_id: payload.id
         }
         ,
         {
@@ -263,8 +268,8 @@ module.exports = {
         phone,
       } = req.body;
 
-      const _id = req.user._id;
-      const exist = await Auth.findOne({ _id: _id });
+      const id = req.user.id;
+      const exist = await Auth.findOne({ id: id });
 
       if (!exist)
         return res
@@ -273,7 +278,7 @@ module.exports = {
 
       const detail_user = await Profile.updateOne(
         {
-          user_id: exist._id,
+          user_id: exist.id,
         },
         {
           fullName: [first_name, last_name].join(" "),
@@ -286,7 +291,7 @@ module.exports = {
         }
       );
 
-      const updatedProfile = await Profile.findOne({ user_id: exist._id });
+      const updatedProfile = await Profile.findOne({ user_id: exist.id });
 
       return res.status(200).json({
         status: true,
@@ -299,8 +304,8 @@ module.exports = {
   },
   myprofile: async (req, res, next) => {
     try{
-      const _id = req.user._id;
-      const data = await Profile.findOne({ user_id: _id})
+      const id = req.user.id;
+      const data = await Profile.findOne({ user_id: id})
 
       if (!data) return res.status(400).json({ status: false, message: 'user not found!' })
 
@@ -316,8 +321,8 @@ module.exports = {
   changeImage: async (req, res, next) => {
     try{
       
-      const _id = req.user._id;
-      const exist = await Auth.findOne( { _id } );
+      const id = req.user.id;
+      const exist = await Auth.findOne( { id } );
       if (!exist) return res.status(400).json({ status: false, message: "user not found!"})
 
       let uploadedFile1 = null;
@@ -344,14 +349,14 @@ module.exports = {
         const image = uploadedFile.url;
         uploadedFile1 = await Auth.updateOne(
           {
-            _id: _id
+            id: id
           },
           {
             thumbnail: image
           }
         )
       }
-        const upload = await Auth.findOne({ _id: _id })
+        const upload = await Auth.findOne({ id: id })
         return res.status(200).json({
           status: true,
           message: "success upload document",
