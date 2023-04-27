@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 
 const Auth = mongoose.model('Auth', {
+        id: {
+            type: String,
+            required: true
+        },
         username: {
             type: String,
             required: true

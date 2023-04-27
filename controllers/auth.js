@@ -23,6 +23,7 @@ module.exports = {
         try {
 
             const {
+                id,
                 username,
                 email,
                 password,
@@ -64,6 +65,7 @@ module.exports = {
 
               const encr = await bcrypt.hash(password, 10);
               const data = await Auth.create({
+                id: data._id,
                 username,
                 email,
                 password: encr,
