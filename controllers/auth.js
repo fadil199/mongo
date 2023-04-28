@@ -281,7 +281,8 @@ module.exports = {
           user_id: exist.id,
         },
         {
-          fullName: [first_name, last_name].join(" "),
+          first_name, 
+          last_name,
           gender,
           country,
           province,

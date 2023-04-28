@@ -4,7 +4,10 @@ const Profile = mongoose.model('Profile', {
         user_id: {
             type: String
         },
-        fullName: {
+        first_name: {
+            type: String
+        },
+        last_name: {
             type: String
         },
         gender: {
