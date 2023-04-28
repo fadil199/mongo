@@ -78,14 +78,14 @@ module.exports = {
 
               const detail = await Profile.create({ 
                 user_id: data.id,
-                first_name: ' ',
-                last_name:' ',
-                gender: ' ',
-                country: ' ',
-                province: ' ',
-                city: ' ',
-                address: ' ',
-                phone: ' ',
+                first_name: '',
+                last_name:'',
+                gender: '',
+                country: '',
+                province: '',
+                city: '',
+                address: '',
+                phone: '',
                })
 
               const payload1 = { id: data.id };
