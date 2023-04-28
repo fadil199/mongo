@@ -78,7 +78,8 @@ module.exports = {
 
               const detail = await Profile.create({ 
                 user_id: data.id,
-                fullName: ' ',
+                first_name: ' ',
+                last_name:' ',
                 gender: ' ',
                 country: ' ',
                 province: ' ',
