@@ -28,7 +28,7 @@ module.exports = {
                 email,
                 password,
                 confirmPassword,
-                thumbnail = 'https://www.vecteezy.com/vector-art/8442086-illustration-of-human-icon-vector-user-symbol-icon-modern-design-on-blank-background',
+                thumbnail,
                 role = roles.user,
                 user_type = userTypes.basic,
                 is_verified = 0,
