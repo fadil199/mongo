@@ -23,7 +23,6 @@ const Auth = mongoose.model('Auth', {
         },
         thumbnail: {
             type: String,
-            required: true
         },
         role: {
             type: String,
