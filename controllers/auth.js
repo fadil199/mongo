@@ -190,13 +190,20 @@ module.exports = {
     },
     akunSaya: async (req, res, next) => {
       const user = req.user;
+
+      const user1 = await Profile.findOne({
+        user_id: user.id
+      })
       
       try {
           return res.status(200).json({
               status: true,
               message: 'autentifikasi berhasil',
-              data: user
-                  
+              data: [{
+                user
+              },[{
+                user1
+              }]]
           });
       }catch (err) {
           next(err);
