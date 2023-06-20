@@ -199,11 +199,7 @@ module.exports = {
           return res.status(200).json({
               status: true,
               message: 'autentifikasi berhasil',
-              data: [{
-                user
-              },[{
-                user1
-              }]]
+              data: user
           });
       }catch (err) {
           next(err);
